@@ -203,12 +203,12 @@
 					$("progress").value = parseInt(count*100/frames);
 				}
 				setPreferredVelocities(simulator);
-				content += "frame" + count;
-				for(var i = 0; i < simulator.getNumAgents(); i++)
+				for(var i = 0; i < simulator.getNumAgents() - 1; i++)
 				{
 					//console.log((simulator.getAgentPosition(i).x+450) + " " + (simulator.getAgentPosition(i).y+350));
-					 content += "\t" + (simulator.getAgentPosition(i).x+450) + "\t" + (simulator.getAgentPosition(i).y+350);
+					 content += (simulator.getAgentPosition(i).x+450) + "\t" + (simulator.getAgentPosition(i).y+350) + "\t";
 				}
+				content += (simulator.getAgentPosition(simulator.getNumAgents() - 1).x+450) + "\t" + (simulator.getAgentPosition(simulator.getNumAgents() - 1).y+350);
 				content += "\n";
 				simulator.run();
 				if($("draw").checked)
