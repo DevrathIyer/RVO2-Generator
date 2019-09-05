@@ -38,27 +38,29 @@
 	<canvas id="board" width="900" height="700">
 		Your browser does not support canvas.  Please use a modern browser with HTML5 support.
 	</canvas>
+	<progress id= "progress" value="0" max="100" width="900"></progress>
 
 	<div id="params">
 		<p id="intro">
 		Algorithm for interactive navigation and planning of large numbers of agents in two-dimensional (crowded) environments.
 		<br/>
-		At runtime, each agent senses the environment independently and computes a collision-free motion based on the optimal
-		reciprocal collision avoidance (ORCA) formalism.
+		To use, put in parameters and hit the start button. The simulation will start running. As the progress bar nears the end, open up the developer tools in your browser. The data will be dumped in the console, which you can right click to save. If you don't open up the console before the data gets dumped, sometimes the browser will freeze.
 		</p>
 
 		<label for="agents"># agents</label>
-		<input type="text" name="agents" id="agents" value="9" />
+		<input type="text" name="agents" id="agents" value="16" />
 
 		<label for="radius">agent radius</label>
 		<input type="text" name="radius" id="radius" value="20" />
 
-		<input type="checkbox" name="obstacles" id="obstacles"> add obstacle (experimental)
-		<br /><br />
+		<label for="fps">frames per second</label>
+		<input type="text" name="fps" id="fps" value="30" />
 
-		<label for="speed">simulation speed</label>
-		<input type="range" min="0.1" max="1.0" step="0.1" value="0.3" name="speed" id="speed"/>
-		<br />
+		<label for="seconds">seconds</label>
+		<input type="text" name="seconds" id="seconds" value="3600" />
+
+		<input type="checkbox" name="draw" id="draw"> Draw Agents (fun to look at, I haven't found that it significantly alters performance)
+		<br /><br />
 
 		<input type="button" value="start new simulation >>" id="run" onclick="run()">
 
@@ -113,9 +115,7 @@
 
 			this.draw = function(simulator) {
 				this.reset();
-				this.drawObstacles(simulator);
 				this.drawAgents(simulator);
-				this.drawGoals(simulator);
 			}
 
 			this.reset = function() {
@@ -129,8 +129,8 @@
 		  for (var i = 0; i < numAgents; ++i) {
 		    if (RVOMath.absSq(simulator.getGoal(i).minus(simulator.getAgentPosition(i))) < 60) {
 		      // Agent is within three radii of its goal, change goal
-		      new_x = Math.random()*(900)-(900)/2;
-		      new_y = Math.random()*(700)-(700)/2;
+		      new_x = Math.random()*(850)-(900)/2;
+		      new_y = Math.random()*(650)-(700)/2;
 		      simulator.setGoal(i,new Vector2(new_x,new_y));
 		    }
 
@@ -160,16 +160,16 @@
 			var NUM_AGENTS = $("agents").value;
 			for (var i=0; i<NUM_AGENTS; i++) {
 				var angle = i * (2*Math.PI) / NUM_AGENTS;
-				x = Math.random()*(900)-(900)/2;
-				y = Math.random()*(700)-(700)/2;
+				x = Math.random()*(850)-(900)/2;
+				y = Math.random()*(650)-(700)/2;
 				simulator.addAgent(new Vector2 (x,y));
  			}
 
 			// Create goals
 			var goals = [];
 			for (var i = 0; i < simulator.getNumAgents (); ++i) {
-				new_x = Math.random()*(900)-(900)/2;
-				new_y = Math.random()*(700)-(700)/2;
+				new_x = Math.random()*(850)-(900)/2;
+				new_y = Math.random()*(650)-(700)/2;
 				goals.push(new Vector2(new_x,new_y));
 			}
 			simulator.addGoals(goals);
@@ -191,22 +191,30 @@
 			clearInterval(interval);
 			board.reset();
 			setupScenario(simulator);
-
+			frames = $("fps").value*$("seconds").value;
 			var step = function() {
-				if(count > 108000)
+				if(count > frames)
 				{
 					clearInterval(interval);
 					console.dir(content);
+				}
+				if(count % 500 == 0)
+				{
+					$("progress").value = parseInt(count*100/frames);
 				}
 				setPreferredVelocities(simulator);
 				content += "frame" + count;
 				for(var i = 0; i < simulator.getNumAgents(); i++)
 				{
-					 content += "\t" + simulator.getAgentPosition(i).x+450 + "\t" + simulator.getAgentPosition(i).y+350;
+					//console.log((simulator.getAgentPosition(i).x+450) + " " + (simulator.getAgentPosition(i).y+350));
+					 content += "\t" + (simulator.getAgentPosition(i).x+450) + "\t" + (simulator.getAgentPosition(i).y+350);
 				}
 				content += "\n";
 				simulator.run();
-				//board.draw(simulator);
+				if($("draw").checked)
+				{
+					board.draw(simulator);
+				}
 				count++;
 			}
 
