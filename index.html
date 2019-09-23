@@ -127,7 +127,7 @@
 			var stopped = 0;
 			var numAgents = simulator.getNumAgents();
 		  for (var i = 0; i < numAgents; ++i) {
-				radius = new Number($("radius").value;
+				radius = new Number($("radius").value);
 		    if (RVOMath.absSq(simulator.getGoal(i).minus(simulator.getAgentPosition(i))) < 60) {
 		      // Agent is within three radii of its goal, change goal
 		      new_x = Math.random()*(900-radius)-(900)/2;
@@ -148,7 +148,7 @@
 
 			// Specify default parameters for agents that are subsequently added.
 			var velocity = new Vector2(1, 1);
-			var radius = new Number($("radius").value)); // TODO validate
+			var radius = new Number($("radius").value); // TODO validate
 			simulator.setAgentDefaults(
 					400, // neighbor distance (min = radius * radius)
 					30, // max neighbors
