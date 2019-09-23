@@ -127,10 +127,11 @@
 			var stopped = 0;
 			var numAgents = simulator.getNumAgents();
 		  for (var i = 0; i < numAgents; ++i) {
+				radius = new Number($("radius").value;
 		    if (RVOMath.absSq(simulator.getGoal(i).minus(simulator.getAgentPosition(i))) < 60) {
 		      // Agent is within three radii of its goal, change goal
-		      new_x = Math.random()*(900-simulator.getAgentRadius(i))-(900)/2;
-		      new_y = Math.random()*(700-simulator.getAgentRadius(i))-(700)/2;
+		      new_x = Math.random()*(900-radius)-(900)/2;
+		      new_y = Math.random()*(700-radius)-(700)/2;
 		      simulator.setGoal(i,new Vector2(new_x,new_y));
 		    }
 
@@ -160,16 +161,16 @@
 			var NUM_AGENTS = $("agents").value;
 			for (var i=0; i<NUM_AGENTS; i++) {
 				var angle = i * (2*Math.PI) / NUM_AGENTS;
-				x = Math.random()*(900-simulator.getAgentRadius(i))-(900)/2;
-				y = Math.random()*(700-simulator.getAgentRadius(i))-(700)/2;
+				x = Math.random()*(900-radius)-(900)/2;
+				y = Math.random()*(700-radius)-(700)/2;
 				simulator.addAgent(new Vector2 (x,y));
  			}
 
 			// Create goals
 			var goals = [];
 			for (var i = 0; i < simulator.getNumAgents (); ++i) {
-				new_x = Math.random()*(900-simulator.getAgentRadius(i))-(900)/2;
-				new_y = Math.random()*(700-simulator.getAgentRadius(i))-(700)/2;
+				new_x = Math.random()*(900-radius)-(900)/2;
+				new_y = Math.random()*(700-radius)-(700)/2;
 				goals.push(new Vector2(new_x,new_y));
 			}
 			simulator.addGoals(goals);
