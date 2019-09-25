@@ -35,10 +35,10 @@
     </style>
 </head>
 <body>
-	<canvas id="board" width="900" height="700">
+	<canvas id="board" width="1000" height="750">
 		Your browser does not support canvas.  Please use a modern browser with HTML5 support.
 	</canvas>
-	<progress id= "progress" value="0" max="100" width="900"></progress>
+	<progress id= "progress" value="0" max="100" width="1000"></progress>
 
 	<div id="params">
 		<p id="intro">
@@ -48,14 +48,14 @@
 		</p>
 
 		<label for="screen">Screen Size</label>
-		<input type="text" name="screen" id="screenx" value="900" onchange="updateCanvas()" /> X
-		<input type="text" name="screen" id="screeny" value="700" onchange="updateCanvas()"/>
+		<input type="text" name="screen" id="screenx" value="1000" onchange="updateCanvas()" /> X
+		<input type="text" name="screen" id="screeny" value="750" onchange="updateCanvas()"/>
 
 		<label for="agents"># agents</label>
-		<input type="text" name="agents" id="agents" value="16" />
+		<input type="text" name="agents" id="agents" value="9" />
 
 		<label for="radius">agent radius</label>
-		<input type="text" name="radius" id="radius" value="25" />
+		<input type="text" name="radius" id="radius" value="39" />
 
 		<label for="fps">frames per second</label>
 		<input type="text" name="fps" id="fps" value="30" />
@@ -147,21 +147,21 @@
 		var setupScenario = function(simulator)
 		{
 			// Specify global time step of the simulation.
-			var speed = 1;
-			simulator.setTimeStep(speed);
+			var speed = .75;
+			//simulator.setTimeStep(speed);
 
 			// Specify default parameters for agents that are subsequently added.
-			var velocity = new Vector2(1, 1);
+			var velocity = new Vector2(.25, .25);
 			var radius = new Number($("radius").value); // TODO validate
 			var screenx = new Number($("screenx").value);
 			var screeny = new Number($("screeny").value);
 			simulator.setAgentDefaults(
-					400, // neighbor distance (min = radius * radius)
+					(4*radius*radius), // neighbor distance (min = radius * radius)
 					30, // max neighbors
 					600, // time horizon
 					600, // time horizon obstacles
 					radius, // agent radius
-					6, // max speed
+					speed, // max speed
 					velocity // default velocity
 				);
 			var NUM_AGENTS = $("agents").value;
