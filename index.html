@@ -47,6 +47,10 @@
 		To use, put in parameters and hit the start button. The simulation will start running. As the progress bar nears the end, open up the developer tools in your browser. The data will be dumped in the console, which you can right click to save. If you don't open up the console before the data gets dumped, sometimes the browser will freeze.
 		</p>
 
+		<label for="screen">Screen Size</label>
+		<input type="text" name="screen" id="screenx" value="900" onchange="updateCanvas()" /> X
+		<input type="text" name="screen" id="screeny" value="700" onchange="updateCanvas()"/>
+
 		<label for="agents"># agents</label>
 		<input type="text" name="agents" id="agents" value="16" />
 
@@ -149,6 +153,8 @@
 			// Specify default parameters for agents that are subsequently added.
 			var velocity = new Vector2(1, 1);
 			var radius = new Number($("radius").value); // TODO validate
+			var screenx = new Number($("screenx").value);
+			var screeny = new Number($("screeny").value);
 			simulator.setAgentDefaults(
 					400, // neighbor distance (min = radius * radius)
 					30, // max neighbors
@@ -161,16 +167,16 @@
 			var NUM_AGENTS = $("agents").value;
 			for (var i=0; i<NUM_AGENTS; i++) {
 				var angle = i * (2*Math.PI) / NUM_AGENTS;
-				x = Math.random()*(900-radius)-(900)/2;
-				y = Math.random()*(700-radius)-(700)/2;
+				x = Math.random()*(screenx-radius)-(screenx)/2;
+				y = Math.random()*(screeny-radius)-(screeny)/2;
 				simulator.addAgent(new Vector2 (x,y));
  			}
 
 			// Create goals
 			var goals = [];
 			for (var i = 0; i < simulator.getNumAgents (); ++i) {
-				new_x = Math.random()*(900-radius)-(900)/2;
-				new_y = Math.random()*(700-radius)-(700)/2;
+				new_x = Math.random()*(screenx-radius)-(screenx)/2;
+				new_y = Math.random()*(screeny-radius)-(screeny)/2;
 				goals.push(new Vector2(new_x,new_y));
 			}
 			simulator.addGoals(goals);
@@ -246,6 +252,15 @@
 		  element.click();
 
 		  document.body.removeChild(element);
+		}
+
+		function updateCanvas()
+		{
+			var screenx = new Number($("screenx").value);
+			var screeny = new Number($("screeny").value);
+
+			$("board").style.width = screenx;
+			$("board").style.height = screeny;
 		}
 
 	</script>
