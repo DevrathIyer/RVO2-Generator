@@ -129,13 +129,15 @@
 
 		var setPreferredVelocities = function(simulator) {
 			var stopped = 0;
+			var screenx = new Number($("screenx").value);
+			var screeny = new Number($("screeny").value);
 			var numAgents = simulator.getNumAgents();
 		  for (var i = 0; i < numAgents; ++i) {
 				radius = new Number($("radius").value);
 		    if (RVOMath.absSq(simulator.getGoal(i).minus(simulator.getAgentPosition(i))) < 60) {
 		      // Agent is within three radii of its goal, change goal
-		      new_x = Math.random()*(900-radius)-(900)/2;
-		      new_y = Math.random()*(700-radius)-(700)/2;
+		      new_x = Math.random()*(screenx-radius)-(screenx)/2;
+		      new_y = Math.random()*(screeny-radius)-(screeny)/2;
 		      simulator.setGoal(i,new Vector2(new_x,new_y));
 		    }
 
@@ -199,6 +201,8 @@
 			board.reset();
 			setupScenario(simulator);
 			frames = $("fps").value*$("seconds").value;
+			var screenx = new Number($("screenx").value);
+			var screeny = new Number($("screeny").value);
 			var step = function() {
 				if(count > frames)
 				{
@@ -213,9 +217,9 @@
 				for(var i = 0; i < simulator.getNumAgents() - 1; i++)
 				{
 					//console.log((simulator.getAgentPosition(i).x+450) + " " + (simulator.getAgentPosition(i).y+350));
-					 content += (simulator.getAgentPosition(i).x+450) + "\t" + (simulator.getAgentPosition(i).y+350) + "\t";
+					 content += (simulator.getAgentPosition(i).x+screenx/2) + "\t" + (simulator.getAgentPosition(i).y+screeny/2) + "\t";
 				}
-				content += (simulator.getAgentPosition(simulator.getNumAgents() - 1).x+450) + "\t" + (simulator.getAgentPosition(simulator.getNumAgents() - 1).y+350);
+				content += (simulator.getAgentPosition(simulator.getNumAgents() - 1).x+screenx/2) + "\t" + (simulator.getAgentPosition(simulator.getNumAgents() - 1).y+screeny/2);
 				content += "\n";
 				simulator.run();
 				if($("draw").checked)
